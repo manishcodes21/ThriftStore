@@ -1,28 +1,28 @@
-import React from 'react'
-import {NavLink,Link} from 'react-router-dom'
-import { useAuth } from '../../context/Auth';
-import toast from 'react-hot-toast';
-import SearchInput from '../Form/SearchInput';
-import useCategory from '../../hooks/useCategory';
-import { useCart } from '../../context/cart';
-import { Badge } from 'antd'; 
+import React from "react";
+import { NavLink, Link } from "react-router-dom";
+import { useAuth } from "../../context/Auth";
+import toast from "react-hot-toast";
+import SearchInput from "../Form/SearchInput";
+import useCategory from "../../hooks/useCategory";
+import { useCart } from "../../context/cart";
+import { Badge } from "antd";
+
 const Header = () => {
-  const [auth,setAuth] =useAuth();
-  //need to destruct cart from useCart sine it returns an array of cart and setCart
+  const [auth, setAuth] = useAuth();
   const [cart] = useCart();
   const categories = useCategory();
-  const handleLogout = () =>{
+  const handleLogout = () => {
     setAuth({
       ...auth,
-      user:null,
-      token:'',
-    })
+      user: null,
+      token: "",
+    });
     localStorage.removeItem("auth");
-    toast.success('Logged Out succesfully');
-  }
+    toast.success("Logout Successfully");
+  };
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav className="navbar navbar-expand-lg bg-body-tertiary fixed-top">
         <div className="container-fluid">
           <button
             className="navbar-toggler"
@@ -37,12 +37,12 @@ const Header = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
             <Link to="/" className="navbar-brand">
-              Thrift Store
+              🛒 Ecommerce App
             </Link>
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
               <SearchInput />
               <li className="nav-item">
-                <NavLink to="/" className="nav-link " activeClassName="active">
+                <NavLink to="/" className="nav-link ">
                   Home
                 </NavLink>
               </li>
@@ -72,15 +72,16 @@ const Header = () => {
                   ))}
                 </ul>
               </li>
-              {auth.user === null ? (
+
+              {!auth?.user ? (
                 <>
                   <li className="nav-item">
-                    <NavLink to="/register" className="nav-link" href="#">
-                      Sign Up
+                    <NavLink to="/register" className="nav-link">
+                      Register
                     </NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink to="/login" className="nav-link" href="#">
+                    <NavLink to="/login" className="nav-link">
                       Login
                     </NavLink>
                   </li>
@@ -89,14 +90,11 @@ const Header = () => {
                 <>
                   <li className="nav-item dropdown">
                     <NavLink
-                      to={`/dashboard/${
-                        auth?.user?.role === 1 ? "admin" : "user"
-                      }`}
                       className="nav-link dropdown-toggle"
-                      activeClassName="active"
+                      href="#"
                       role="button"
                       data-bs-toggle="dropdown"
-                      aria-expanded="false"
+                      style={{ border: "none" }}
                     >
                       {auth?.user?.name}
                     </NavLink>
@@ -104,10 +102,9 @@ const Header = () => {
                       <li>
                         <NavLink
                           to={`/dashboard/${
-                            auth?.user?.role == 1 ? "admin" : "user"
+                            auth?.user?.role === 1 ? "admin" : "user"
                           }`}
                           className="dropdown-item"
-                          activeClassName="active"
                         >
                           Dashboard
                         </NavLink>
@@ -125,13 +122,12 @@ const Header = () => {
                   </li>
                 </>
               )}
-
               <li className="nav-item">
-                <Badge count={cart?.length} showZero>
-                  <NavLink to="/cart" className="nav-link">
+                <NavLink to="/cart" className="nav-link">
+                  <Badge count={cart?.length} showZero offset={[10, -5]}>
                     Cart
-                  </NavLink>
-                </Badge>
+                  </Badge>
+                </NavLink>
               </li>
             </ul>
           </div>
@@ -139,9 +135,6 @@ const Header = () => {
       </nav>
     </>
   );
-}
+};
 
-export default Header
-
-
-
+export default Header;
