@@ -21,10 +21,11 @@ const app = express()
 
 // CORS configuration
 const corsOptions = {
-  origin: "https://thrift-store-client.vercel.app", // Replace with your client-side domain
+  origin: "https://thrift-store-client.vercel.app",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type, Authorization",
   credentials: true,
-  optionsSuccessStatus: 204,
+  optionsSuccessStatus: 200,
 };
 
 // Use middlewares
