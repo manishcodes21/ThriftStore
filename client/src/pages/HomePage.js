@@ -7,7 +7,7 @@ import { Prices } from "../components/Prices";
 import { useCart } from "../context/cart";
 import { toast } from "react-hot-toast";
 import "../styles/Homepage.css";
-import { AiOutlineReload } from "react-icons/ai";
+// import { AiOutlineReload } from "react-icons/ai";
 const HomePage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
@@ -221,7 +221,7 @@ const HomePage = () => {
                 ) : (
                   <>
                     {" "}
-                    Loadmore <AiOutlineReload />
+                    Loadmore 
                   </>
                 )}
               </button>
