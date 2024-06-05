@@ -11,14 +11,12 @@ dotenv.config();
 
 //payment gateway
 
-const gateway = new braintree.BraintreeGateway({  
+const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
   merchantId: process.env.BRAINTREE_MERCHANT_ID,
   publicKey: process.env.BRAINTREE_PUBLIC_KEY,
   privateKey: process.env.BRAINTREE_PRIVATE_KEY,
 });
-
-
 
 export const createProductController = async (req, res) => {
   try {
@@ -144,47 +142,47 @@ export const getSingleProductController = async (req, res) => {
 //get photo of the product
 //we are fetching separetely for overall boost of application
 
-  export const getProductPhotoController = async (req, res) => {
-    try {
-      const product = await productModel.findById(req.params.pid).select("photo");
-      if (!product || !product.photo || !product.photo.data) {
-        return res.status(404).send({
-          success: false,
-          message: "Product photo not found",
-        });
-      }
-      res.set("Content-type", product.photo.contentType);
-      return res.status(200).send(product.photo.data);
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({
+export const getProductPhotoController = async (req, res) => {
+  try {
+    const product = await productModel.findById(req.params.pid).select("photo");
+    if (!product || !product.photo || !product.photo.data) {
+      return res.status(404).send({
         success: false,
-        message: "Error in getting product photo",
-        error,
+        message: "Product photo not found",
       });
     }
-  };
+    res.set("Content-type", product.photo.contentType);
+    return res.status(200).send(product.photo.data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in getting product photo",
+      error,
+    });
+  }
+};
 
 //delete product
-export const deleteProductController =async(req,res)=>{
+export const deleteProductController = async (req, res) => {
   try {
     await productModel.findByIdAndDelete(req.params.pid);
     res.status(200).send({
       success: true,
-      message: "Product deleted successfully"
-    })
+      message: "Product deleted successfully",
+    });
   } catch (error) {
-     console.log(error);
-     res.status(500).send({
-       success: false,
-       message: "Error in deleting product ",
-       error,
-     });
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in deleting product ",
+      error,
+    });
   }
-}
+};
 
 //update product
-export const updateProductController=async(req,res)=>{
+export const updateProductController = async (req, res) => {
   try {
     const { name, slug, description, price, category, quantity, shipping } =
       req.fields;
@@ -223,13 +221,16 @@ export const updateProductController=async(req,res)=>{
         });
     }
 
-    const product =await productModel.findByIdAndUpdate(req.params.pid,{
-      ...req.fields,
-      slug:slugify(name)
-    },
-    {
-      new:true
-    })
+    const product = await productModel.findByIdAndUpdate(
+      req.params.pid,
+      {
+        ...req.fields,
+        slug: slugify(name),
+      },
+      {
+        new: true,
+      }
+    );
     if (photo) {
       product.photo.data = fs.readFileSync(photo.path);
       product.photo.contentType = photo.type;
@@ -249,8 +250,7 @@ export const updateProductController=async(req,res)=>{
       error,
     });
   }
-}
-
+};
 
 // filters
 export const productFiltersController = async (req, res) => {
@@ -321,7 +321,6 @@ export const productListController = async (req, res) => {
   }
 };
 
-
 // search product
 export const searchProductController = async (req, res) => {
   try {
@@ -347,7 +346,6 @@ export const searchProductController = async (req, res) => {
     });
   }
 };
-
 
 // similar products
 export const realtedProductController = async (req, res) => {
@@ -395,27 +393,25 @@ export const productCategoryController = async (req, res) => {
   }
 };
 
-
 //token controller
-export const braintreeTokenController = async(req, res) => {
+export const braintreeTokenController = async (req, res) => {
   try {
-      gateway.clientToken.generate({}, (err, response) => {
-        if (err) {
-          return res.status(500).send({
-            success: false,
-            message: "Error in generating token",
-            error: err,
-          });
-        }
-        res.send({
-          success: true,
-          token: response.clientToken,
+    gateway.clientToken.generate({}, (err, response) => {
+      if (err) {
+        return res.status(500).send({
+          success: false,
+          message: "Error in generating token",
+          error: err,
         });
+      }
+      res.send({
+        success: true,
+        token: response.clientToken,
       });
+    });
   } catch (error) {
     console.log(error);
   }
-
 };
 
 //payment controller
@@ -428,7 +424,7 @@ export const braintreePaymentController = async (req, res) => {
     });
     let newTransaction = gateway.transaction.sale(
       {
-        amount: total,  
+        amount: total,
         paymentMethodNonce: nonce,
         options: {
           submitForSettlement: true,

@@ -170,7 +170,6 @@ export const forgotPasswordController = async (req, res) => {
   }
 };
 
-
 //update prfole
 export const updateProfileController = async (req, res) => {
   try {
@@ -211,7 +210,7 @@ export const getOrdersController = async (req, res) => {
   try {
     const orders = await orderModel
       .find({ buyer: req.user._id })
-      
+
       .populate("products", "-photo")
       .populate("buyer", "name");
     res.json(orders);
@@ -225,7 +224,7 @@ export const getOrdersController = async (req, res) => {
   }
 };
 
-//orders of all users 
+//orders of all users
 export const getAllOrdersController = async (req, res) => {
   try {
     const orders = await orderModel

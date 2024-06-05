@@ -4,10 +4,11 @@ import userModel from "../models/userModel.js";
 //Protected Routes token base
 // Protected Routes token base
 export const requireSignIn = async (req, res, next) => {
- 
-
   try {
-    const decode = JWT.verify(req.headers.authorization, process.env.JWT_SECRET);
+    const decode = JWT.verify(
+      req.headers.authorization,
+      process.env.JWT_SECRET
+    );
     console.log("JWT Decoded:", decode);
     req.user = decode;
     next();
@@ -42,4 +43,3 @@ export const isAdmin = async (req, res, next) => {
     });
   }
 };
-
