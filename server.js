@@ -20,15 +20,15 @@ const app = express()
 
 
 // CORS configuration
-// const corsOptions = {
-//   origin: "https://thrift-store-server-chi.vercel.app", // Replace with your client-side domain
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   credentials: true,
-//   optionsSuccessStatus: 204,
-// };
+const corsOptions = {
+  origin: "https://thrift-store-client.vercel.app", // Replace with your client-side domain
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
 
 // Use middlewares
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json())
 app.use(morgan('dev'))
 
